@@ -11,6 +11,7 @@
   </div>
   <div class="option-module-search-box">
       <label
+        class="option-module-search-box-options"
         :for="searchOption"
         :key="index"
         v-for="(searchOption, index) in filterOption.searchByOptions"
