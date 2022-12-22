@@ -1,5 +1,12 @@
 # pokemon
+Done: 
+ - Display of pokemon
+ - next and previous set of pokemons
+ - display options 10,20,50
 
+
+Not Done
+- Unit test
 ## Project setup
 ```
 npm install
@@ -8,21 +15,6 @@ npm install
 ### Compiles and hot-reloads for development
 ```
 npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```
 
 ### Customize configuration

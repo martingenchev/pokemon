@@ -2,9 +2,13 @@
   <div class="card">
     <div class="card-detail-box" v-if="pokemon">
       <div class="card-detail-box-wrapper">
-        <img class="img-pokemon"
-             :alt="pokemon.name"
-             :src="pokemon.sprites.front_shiny">
+<!--   TODO create an image component, improve styling   -->
+        <img
+          v-if="pokemon.sprites"
+          class="img-pokemon"
+          :alt="pokemon.name"
+          :src="pokemon.sprites.front_shiny"
+        >
         <h2>Name : {{pokemon.name}}</h2>
         <p> height: {{pokemon.height}}</p>
         <p> weight: {{pokemon.weight}}</p>
@@ -18,7 +22,7 @@
     </div>
   </div>
 </template>
-<script lang="ts">
+<script lang="js">
 import { mapActions } from 'vuex';
 
 export default {
@@ -26,17 +30,23 @@ export default {
   props: {
     pokemon: Object,
   },
-  data() {
-    return {
-      // data object goes here
-    };
+  watch: {
+    pokemon(newPokemon, oldPokemon) {
+      if (oldPokemon.name !== null
+        && newPokemon.name !== oldPokemon.name
+        && !newPokemon.abilities) {
+        this.getPokemon(newPokemon.url);
+      }
+    },
   },
-  created() {
-    this.getPokemon(this.pokemon.url);
+  mounted() {
+    if (this.pokemon) {
+      this.getPokemon(this.pokemon.url);
+    }
   },
   methods: {
     ...mapActions({
-      getPokemon: 'getPokemon', // map `this.add()` to `this.$store.dispatch('increment')`
+      getPokemon: 'getPokemon',
     }),
   },
 };
@@ -52,7 +62,6 @@ export default {
   flex-direction: column;
   min-height: 100%;
 
-  // sets up hover state
   position: relative;
   top: 0;
   transition: all .1s ease-in;

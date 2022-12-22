@@ -7,37 +7,45 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     pokemons: [],
-    updatedPokemons: [],
+    next: '',
+    previous: '',
   },
   getters: {
-    getPokemon: (state) => state.pokemons,
+    getPokemons: (state) => state.pokemons,
   },
   mutations: {
-    setPokemon: (state, data) => {
+    setPokemons: (state, data) => {
       state.pokemons = data;
     },
     updatePokemon: (state, data) => {
       const statePokemons = JSON.parse(JSON.stringify(state.pokemons));
-      const updatePokenmon = statePokemons.map((pokemon : Pokemon) => {
+      state.pokemons = statePokemons.map((pokemon: Pokemon) => {
         const PokemonName: string = pokemon.name;
         return PokemonName === data.name ? data : pokemon;
       });
-      console.log(updatePokenmon);
-      state.pokemons = updatePokenmon;
+    },
+    setPage: (state, data) => {
+      state.next = data.next;
+      state.previous = data.previous;
     },
   },
   actions: {
-    getPokemonsList: ({ commit }) => {
-      Vue.axios.get('https://pokeapi.co/api/v2/pokemon?limit=20&offset=0').then((response) => {
-        // console.log(response.data);
+    getPokemonsList: ({ commit, rootState }, payload) => {
+      let apiRoute = `https://pokeapi.co/api/v2/pokemon?limit=${payload.limit}&offset=${payload.offset}`;
+      if (rootState.next && payload.page === 'next') {
+        apiRoute = rootState.next;
+      } else if (rootState.previous && payload.page === 'previous') {
+        apiRoute = rootState.previous;
+      }
+      Vue.axios.get(apiRoute).then((response) => {
         // TODO create an commit for next page
-        commit('setPokemon', response.data.results);
+        console.log('response', response.data);
+        commit('setPage', response.data);
+        commit('setPokemons', response.data.results);
       });
     },
-    getPokemon: ({ commit }, url) => {
+    getPokemon: ({ commit, rootState }, url: string) => {
       Vue.axios.get(url).then((response) => {
-        console.log(response.data);
-        // TODO create an commit for next page
         commit('updatePokemon', response.data);
       });
     },
