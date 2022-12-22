@@ -1,26 +1,59 @@
 <template>
-  <div class="card">
-    <div class="card-detail-box" v-if="pokemon">
-      <div class="card-detail-box-wrapper">
-<!--   TODO create an image component, improve styling   -->
-        <img
-          v-if="pokemon.sprites"
-          class="img-pokemon"
-          :alt="pokemon.name"
-          :src="pokemon.sprites.front_shiny"
-        >
-        <h2>Name : {{pokemon.name}}</h2>
-        <p> height: {{pokemon.height}}</p>
-        <p> weight: {{pokemon.weight}}</p>
-        <ul class="card-detail-box-abilities">
-          <li :key="index" v-for="({ability}, index) in pokemon.abilities">
-            {{ ability.name}}
-          </li>
-        </ul>
+  <v-skeleton-loader
+    v-if="isLoading"
+    class="mx-auto"
+    max-width="300"
+    type="card"
+  ></v-skeleton-loader>
+  <v-card
+    v-else
+    class="mx-auto my-12 card"
+    max-width="374"
+  >
+    <v-skeleton-loader
+      v-if="!pokemon.sprites"
+      class="mx-auto"
+      max-width="300"
+      type="card"
+    ></v-skeleton-loader>
+    <v-img
+      v-else
+      height="250"
+      :src="pokemon.sprites.front_shiny"
+    ></v-img>
 
-      </div>
-    </div>
-  </div>
+    <v-card-title>{{pokemon.name}}</v-card-title>
+
+    <v-card-text>
+              <p> height: {{pokemon.height}}</p>
+              <p> weight: {{pokemon.weight}}</p>
+    </v-card-text>
+
+    <v-divider class="mx-4"></v-divider>
+
+    <v-card-title>Abilities</v-card-title>
+
+    <v-card-text>
+      <v-chip-group
+        active-class="deep-purple accent-4 white--text"
+        column
+      >
+        <v-chip :key="index" v-for="({ability}, index) in pokemon.abilities">
+          {{ ability.name }}
+        </v-chip>
+      </v-chip-group>
+    </v-card-text>
+
+    <v-card-actions>
+      <v-btn
+        color="deep-purple lighten-2"
+        text
+        @click="openModal"
+      >
+        Get More detail
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 <script lang="js">
 import { mapActions } from 'vuex';
@@ -29,6 +62,11 @@ export default {
   name: 'pokemon-card',
   props: {
     pokemon: Object,
+  },
+  data() {
+    return {
+      isLoading: true,
+    };
   },
   watch: {
     pokemon(newPokemon, oldPokemon) {
@@ -42,12 +80,16 @@ export default {
   mounted() {
     if (this.pokemon) {
       this.getPokemon(this.pokemon.url);
+      this.isLoading = false;
     }
   },
   methods: {
     ...mapActions({
       getPokemon: 'getPokemon',
     }),
+    openModal() {
+      console.log('Open');
+    },
   },
 };
 </script>
@@ -69,41 +111,6 @@ export default {
   &:hover {
     top: -2px;
     box-shadow: 0 4px 5px rgba(0,0,0,0.2);
-  }
-
-  .detail-box {
-    padding: 20px;
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  h2 {
-    font-size: 20px;
-    margin: 0;
-    color: #333;
-  }
-
-  p {
-    flex: 1;
-    line-height: 1.4;
-  }
-
-  span {
-    font-size: 12px;
-    font-weight: bold;
-    color: #999;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    margin: 2em 0 0 0;
-  }
-
-  .thumb {
-    padding-bottom: 60%;
-    background-size: cover;
-    background-position: center center;
   }
 }
 </style>

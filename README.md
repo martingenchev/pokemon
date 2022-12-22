@@ -3,6 +3,8 @@ Done:
  - Display of pokemon
  - next and previous set of pokemons
  - display options 10,20,50
+ - sorting
+ - search
 
 
 Not Done

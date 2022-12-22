@@ -65,6 +65,7 @@ export default {
       this.searchData = data;
     },
     sortBy(sortValue) {
+      console.log(sortValue);
       const localPokemons = JSON.parse(JSON.stringify(this.pokemons));
       const sortedPokemon = localPokemons.sort((pokemonA, pokemonB) => {
         if (sortValue === 'name') {

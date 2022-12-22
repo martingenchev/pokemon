@@ -38,13 +38,11 @@ export default new Vuex.Store({
         apiRoute = rootState.previous;
       }
       Vue.axios.get(apiRoute).then((response) => {
-        // TODO create an commit for next page
-        console.log('response', response.data);
         commit('setPage', response.data);
         commit('setPokemons', response.data.results);
       });
     },
-    getPokemon: ({ commit, rootState }, url: string) => {
+    getPokemon: ({ commit }, url: string) => {
       Vue.axios.get(url).then((response) => {
         commit('updatePokemon', response.data);
       });
