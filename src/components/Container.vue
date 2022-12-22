@@ -4,6 +4,7 @@
       @limitChange="limitChange"
       @search="search"
       @sortBy="sortBy"
+      :optionData="optionData"
     />
     <NavigationControllers @pageChange="pageChange" />
     <div class="card-wrapper" v-if="pokemons !== 'Not Found'">
@@ -34,8 +35,7 @@ export default {
   computed: {
     pokemons() {
       if (this.searchData.search !== undefined) {
-        console.log('this.searchData.search', this.searchData.search);
-        console.log('this.applySearch()', this.applySearch());
+        // TODO make the applySearch going thought the state
         return this.applySearch();
       }
       return this.$store.getters.getPokemons;
@@ -45,10 +45,13 @@ export default {
     return {
       limit: 20,
       searchData: {},
+      optionData: {},
     };
   },
-  mounted() {
-    this.getPokemonsList({ limit: 20, offset: 0 });
+  async mounted() {
+    await this.getPokemonsList({ limit: 20, offset: 0 });
+    this.optionData.sortValueFromLS = localStorage.getItem('sort');
+    this.sortBy(this.optionData.sortValueFromLS);
   },
   methods: {
     ...mapActions({
@@ -65,7 +68,6 @@ export default {
       this.searchData = data;
     },
     sortBy(sortValue) {
-      console.log(sortValue);
       const localPokemons = JSON.parse(JSON.stringify(this.pokemons));
       const sortedPokemon = localPokemons.sort((pokemonA, pokemonB) => {
         if (sortValue === 'name') {
@@ -83,6 +85,7 @@ export default {
         }
         return pokemonA[sortValue] - pokemonB[sortValue];
       });
+      localStorage.setItem('sort', sortValue);
       this.setSortedPokemons(sortedPokemon);
     },
     applySearch() {
@@ -93,6 +96,7 @@ export default {
         }
         return pokemon[this.searchData.searchBy].includes(this.searchData.search);
       });
+      localStorage.setItem('search', JSON.stringify(this.searchData));
       if (foundPokemons.length) {
         return foundPokemons;
       }

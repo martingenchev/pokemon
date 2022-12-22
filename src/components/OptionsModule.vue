@@ -43,6 +43,9 @@
 <script>
 export default {
   name: 'OptionsModule',
+  props: {
+    optionData: Object,
+  },
   data() {
     return {
       filterOption: {
@@ -54,6 +57,14 @@ export default {
         sortOption: '',
       },
     };
+  },
+  watch: {
+    'optionData.sortValueFromLS': {
+      handler(newSort) {
+        this.filterOption.sortOption = newSort;
+      },
+      immediate: true,
+    },
   },
   methods: {
     handleSearch(value) {

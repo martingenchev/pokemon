@@ -7,7 +7,7 @@ Done:
  - search
 
 
-Not Done
+Not Done:
 - Unit test
 ## Project setup
 ```
