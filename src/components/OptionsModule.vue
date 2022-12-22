@@ -31,6 +31,7 @@
   <div class="option-module-sort-box">
     <p>Sort by</p>
     <label
+      class="option-module-sort-box-input"
       :for="sortOption"
       :key="index"
       v-for="(sortOption, index) in filterOption.sortBy"
