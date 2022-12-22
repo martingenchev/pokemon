@@ -42,6 +42,7 @@
         type="radio"
         :id="sortOption"
         :value="sortOption"
+        v-model="filterOption.sortOption"
         @input="$emit('sortBy', sortOption)"
       />
     </label>
@@ -60,6 +61,7 @@ export default {
         searchBy: 'name',
         search: '',
         sortBy: ['name', 'height', 'weight'],
+        sortOption: '',
       },
     };
   },
@@ -70,8 +72,7 @@ export default {
       }
     },
   },
-  // TODO 1. create search logic in the current pokemon list
-  // TODO.2 create sorting logic for name, height, weight
+  // TODO Improve the styling
 };
 </script>
 

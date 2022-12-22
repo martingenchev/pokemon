@@ -53,6 +53,7 @@ export default {
   methods: {
     ...mapActions({
       getPokemonsList: 'getPokemonsList',
+      setSortedPokemons: 'setSortedPokemons',
     }),
     pageChange(page) {
       this.getPokemonsList({ page });
@@ -63,14 +64,31 @@ export default {
     search(data) {
       this.searchData = data;
     },
-    sortBy(data) {
-      console.log(data);
+    sortBy(sortValue) {
+      const localPokemons = JSON.parse(JSON.stringify(this.pokemons));
+      const sortedPokemon = localPokemons.sort((pokemonA, pokemonB) => {
+        if (sortValue === 'name') {
+          const nameA = pokemonA[sortValue].toUpperCase();
+          const nameB = pokemonB[sortValue].toUpperCase();
+          if (nameA > nameB) {
+            return 1;
+          }
+          if (nameA < nameB) {
+            return -1;
+          }
+
+          // names must be equal
+          return 0;
+        }
+        return pokemonA[sortValue] - pokemonB[sortValue];
+      });
+      this.setSortedPokemons(sortedPokemon);
     },
     applySearch() {
       const localPokemons = JSON.parse(JSON.stringify(this.$store.getters.getPokemons));
       const foundPokemons = localPokemons.filter((pokemon) => {
         if (this.searchData.searchBy === 'abilities') {
-          // logic for search by abilities
+          // TODO logic for search by abilities
         }
         return pokemon[this.searchData.searchBy].includes(this.searchData.search);
       });

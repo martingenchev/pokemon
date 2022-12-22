@@ -49,6 +49,9 @@ export default new Vuex.Store({
         commit('updatePokemon', response.data);
       });
     },
+    setSortedPokemons: ({ commit }, payload: Array<Pokemon>) => {
+      commit('setPokemons', payload);
+    },
   },
   modules: {
   },
