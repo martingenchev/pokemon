@@ -1,12 +1,14 @@
 <template>
-<div> {{ $route.params }}</div>
+<div>
+  <router-link :to="`/`"> Back </router-link>
+  <p> {{ $route.params }} </p>
+</div>
 </template>
 
 <script>
 export default {
   name: 'PokemonView.vue',
   // TODO fetch the pokemon data from the state and display
-  // TODO add back button
   // TODO styling
 };
 </script>

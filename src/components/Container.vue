@@ -51,11 +51,15 @@ export default {
   async created() {
     this.optionData.sortValueFromLS = localStorage.getItem('sort');
     this.optionData.searchValueFromLS = JSON.parse(localStorage.getItem('search'));
-    await this.getPokemonsList({ limit: 20, offset: 0 });
+    if (!this.pokemons.length) {
+      await this.getPokemonsList({ limit: 20, offset: 0 });
+    }
   },
   mounted() {
     this.searchData = this.optionData.searchValueFromLS;
-    this.sortBy(this.optionData.sortValueFromLS);
+    if (this.optionData.sortValueFromLS) {
+      this.sortBy(this.optionData.sortValueFromLS);
+    }
   },
   methods: {
     ...mapActions({

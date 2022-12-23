@@ -72,7 +72,7 @@ export default {
     },
   },
   async created() {
-    if (this.pokemon) {
+    if (Object.keys(this.pokemon).length) {
       await this.getPokemon(this.pokemon.url);
       this.isLoading = false;
     }
