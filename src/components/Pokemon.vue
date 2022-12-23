@@ -45,13 +45,7 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn
-        color="deep-purple lighten-2"
-        text
-        @click="openModal"
-      >
-        Get More detail
-      </v-btn>
+      <router-link :to="`/${pokemon.id}`"> Get More detail</router-link>
     </v-card-actions>
   </v-card>
 </template>
@@ -87,9 +81,6 @@ export default {
     ...mapActions({
       getPokemon: 'getPokemon',
     }),
-    openModal() {
-      console.log('Open');
-    },
   },
 };
 </script>
