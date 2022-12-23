@@ -5,6 +5,7 @@ Done:
  - display options 10,20,50
  - sorting
  - search
+ - usage to localStorage to apply the sorting and search functionality from before
 
 
 Not Done:
