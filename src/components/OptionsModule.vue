@@ -23,7 +23,12 @@
         :value="searchOption"
       ></v-radio>
     </v-radio-group>
-    <v-text-field label="Search Pokemon" @input="handleSearch" ></v-text-field>
+    <v-text-field
+      label="Search Pokemon"
+      v-model="filterOption.search"
+      @input="handleSearch"
+    >
+    </v-text-field>
   </div>
 
   <div class="option-module-sort-box">
@@ -65,13 +70,18 @@ export default {
       },
       immediate: true,
     },
+    'optionData.searchValueFromLS': {
+      handler(newSearch) {
+        this.filterOption.searchBy = newSearch.searchBy;
+        this.filterOption.search = newSearch.search;
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   methods: {
     handleSearch(value) {
-      console.log(value);
-      if (value.length > 2) {
-        this.$emit('search', { searchBy: this.filterOption.searchBy, search: value });
-      }
+      this.$emit('search', { searchBy: this.filterOption.searchBy, search: value });
     },
   },
 };

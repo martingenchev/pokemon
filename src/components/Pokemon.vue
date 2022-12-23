@@ -77,9 +77,9 @@ export default {
       }
     },
   },
-  mounted() {
+  async created() {
     if (this.pokemon) {
-      this.getPokemon(this.pokemon.url);
+      await this.getPokemon(this.pokemon.url);
       this.isLoading = false;
     }
   },

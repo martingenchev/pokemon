@@ -7,7 +7,7 @@
       :optionData="optionData"
     />
     <NavigationControllers @pageChange="pageChange" />
-    <div class="card-wrapper" v-if="pokemons !== 'Not Found'">
+    <div class="card-wrapper" v-if="pokemons !== 'Not Found' && pokemons.length">
       <div :key="index" v-for="(pokemon, index) in pokemons">
         <Pokemon  :pokemon="pokemon" />
       </div>
@@ -48,9 +48,13 @@ export default {
       optionData: {},
     };
   },
-  async mounted() {
-    await this.getPokemonsList({ limit: 20, offset: 0 });
+  async created() {
     this.optionData.sortValueFromLS = localStorage.getItem('sort');
+    this.optionData.searchValueFromLS = JSON.parse(localStorage.getItem('search'));
+    await this.getPokemonsList({ limit: 20, offset: 0 });
+  },
+  mounted() {
+    this.searchData = this.optionData.searchValueFromLS;
     this.sortBy(this.optionData.sortValueFromLS);
   },
   methods: {
@@ -68,7 +72,7 @@ export default {
       this.searchData = data;
     },
     sortBy(sortValue) {
-      const localPokemons = JSON.parse(JSON.stringify(this.pokemons));
+      const localPokemons = JSON.parse(JSON.stringify(this.$store.getters.getPokemons));
       const sortedPokemon = localPokemons.sort((pokemonA, pokemonB) => {
         if (sortValue === 'name') {
           const nameA = pokemonA[sortValue].toUpperCase();
